@@ -75,7 +75,7 @@ GOOGLE_SHEETS_CREDENTIALS_FILE = "path/to/credentials.json"
 1. Create a Google Sheet with at minimum these columns:
    - `artist_name` (required)
    - `song_title` (required)
-   - Additional columns will be populated: `track_id`, `song_popularity`, `duration`, `tempo_spotify`, `energy`, `danceability`, `artist_id`, `year`, `youtube_views`, `lyrics`, etc.
+   - Additional columns will be auto-populated: `track_id`, `song_popularity`, `duration`, `tempo_spotify`, `energy`, `danceability`, `artist_id`, `year`, `youtube_views`, `lyrics`, etc.
 
 2. Share your Google Sheet with the email address from your service account credentials. Give it the role of "Editor".
 
@@ -84,20 +84,27 @@ GOOGLE_SHEETS_CREDENTIALS_FILE = "path/to/credentials.json"
 ### Basic Command Line Usage
 
 ```bash
-python songdata.py "Your Spreadsheet Name" "Sheet1" --methods spotify youtube lyrics
+python songdata.py "Your Spreadsheet Name" "Sheet1"
 ```
+
+This will collect data from all available sources (Spotify, YouTube, and Genius lyrics).
 
 ### Options
 
 - `spreadsheet`: Name of your Google Sheet
 - `worksheet`: Name or index of the worksheet (0 for first sheet)
 - `--methods`: Data to collect (spotify, youtube, lyrics, or any combination)
+  - If omitted, all methods (spotify, youtube, lyrics) will be used by default
 - `--start-row`: Row to start from (0-based, after headers)
 - `--config`: Path to config file if using Option 2 for configuration
 
-### Example
+### Examples
 
 ```bash
+# Use all methods (default)
+python songdata.py "Weezer Setlist" 0
+
+# Use only specific methods
 python songdata.py "Weezer Setlist" 0 --methods spotify youtube
 ```
 
