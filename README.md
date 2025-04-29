@@ -17,11 +17,30 @@ A Python toolkit for collecting and analyzing song data from various music platf
 ## Installation
 
 1. Clone this repository
-2. Install the required packages:
+
+2. Set up a virtual environment (recommended):
+
+   **Windows:**
+
+   ```powershell
+   python -m venv venv
+   venv\Scripts\activate
    ```
+
+   **macOS/Linux:**
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate
+   ```
+
+3. Install the required packages:
+
+   ```powershell
    pip install -r requirements.txt
    ```
-3. Set up your API credentials (see Configuration section)
+
+4. Set up your API credentials (see Configuration section)
 
 ## Configuration
 
@@ -31,7 +50,7 @@ You can configure the toolkit in two ways:
 
 Create a `.env` file in the project root with the following variables:
 
-```
+```ini
 SPOTIFY_CLIENT_ID=your_spotify_client_id
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
 GENIUS_ACCESS_TOKEN=your_genius_token
