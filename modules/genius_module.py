@@ -40,10 +40,66 @@ def remove_bgvs(lyrics_string):
 
 def remove_bad_lines(lyrics_string):
     """Remove any lines that start with certain bad strings"""
-    bad_strings = ["See Weezer Live", "Embed", "[", "You might also like"]
+    # More generic bad strings that appear in most Genius lyrics
+    bad_strings = [
+        "Embed", 
+        "[", 
+        "You might also like",
+        "See",
+        "Contributors",
+        "Translations",
+        "Read More",
+        "Lyrics",
+        "Romanization"
+    ]
     lyrics_list = lyrics_string.split("\n")
     lyrics_list = [line for line in lyrics_list if not line.startswith(tuple(bad_strings))]
     return "\n".join(lyrics_list)
+
+
+def remove_metadata_header(lyrics_string):
+    """Remove metadata and header content that appears before the actual lyrics"""
+    if not lyrics_string:
+        return ""
+    
+    # Check for common Genius lyrics separator
+    if "---" in lyrics_string:
+        # Take only content after the first separator
+        parts = lyrics_string.split("---", 1)
+        if len(parts) > 1 and len(parts[1]) > 100:  # Make sure we didn't accidentally cut off lyrics
+            return parts[1].strip()
+    
+    # Try to detect the actual lyrics by looking for longer meaningful sections
+    lines = lyrics_string.split("\n")
+    
+    # Find the first line that likely begins the actual lyrics
+    # (typically after the metadata, and doesn't contain common metadata words)
+    metadata_indicators = [
+        "Contributors", "Translations", "Lyrics", "Read More", "Released", 
+        "Romanization", "EP", "music video", "album", "single", "track", "Music"
+    ]
+    
+    # Find a clean starting point - look for a blank line followed by content
+    # that doesn't match metadata patterns
+    start_index = 0
+    for i in range(len(lines)):
+        # Skip very short lines, they're usually not the start of lyrics
+        if not lines[i].strip() and i+1 < len(lines) and len(lines[i+1].strip()) > 5:
+            # Check if the next line doesn't contain metadata indicators
+            if not any(indicator in lines[i+1] for indicator in metadata_indicators):
+                start_index = i + 1
+                break
+    
+    # If we found a good starting point, use it
+    if start_index > 0:
+        cleaned_lyrics = "\n".join(lines[start_index:])
+        
+        # Extra check: if we have very little content left, revert to original
+        if len(cleaned_lyrics) < 100 and len(lyrics_string) > 200:
+            return lyrics_string
+        return cleaned_lyrics
+    
+    return lyrics_string
 
 
 def clean_lyrics(lyrics_string):
@@ -51,9 +107,21 @@ def clean_lyrics(lyrics_string):
     if not lyrics_string:
         return ""
     
-    lyrics = remove_bgvs(lyrics_string)
+    # First remove the metadata header
+    lyrics = remove_metadata_header(lyrics_string)
+    
+    # Then apply other cleaning functions
+    lyrics = remove_bgvs(lyrics)
     lyrics = remove_bad_lines(lyrics)
-    return lyrics
+    
+    # Additional cleaning
+    lyrics = re.sub(r"\[.*?\]", "", lyrics)  # Remove square bracket content
+    lyrics = re.sub(r"\d+ Contributors", "", lyrics)  # Remove contributor counts
+    
+    # Normalize newlines
+    lyrics = re.sub(r"\n{3,}", "\n\n", lyrics)  # Replace 3+ newlines with 2
+    
+    return lyrics.strip()
 
 
 def get_song_lyrics(artist_name, song_title, genius_client=None):
