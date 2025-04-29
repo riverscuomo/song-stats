@@ -1,0 +1,10 @@
+spotipy>=2.23.0
+lyricsgenius>=3.0.1
+google-api-python-client>=2.88.0
+google-auth>=2.19.0
+google-auth-oauthlib>=1.0.0
+google-auth-httplib2>=0.1.0
+gspread>=5.10.0
+oauth2client>=4.1.3
+python-dotenv>=1.0.0
+rich>=13.4.2
