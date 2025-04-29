@@ -75,9 +75,9 @@ GOOGLE_SHEETS_CREDENTIALS_FILE = "path/to/credentials.json"
 1. Create a Google Sheet with at minimum these columns:
    - `artist_name` (required)
    - `song_title` (required)
-   - Additional columns will be populated: `track_id`, `song_popularity`, `tempo`, `energy`, `danceability`, `view_count`, etc.
+   - Additional columns will be populated: `track_id`, `song_popularity`, `duration`, `tempo_spotify`, `energy`, `danceability`, `artist_id`, `release_date`, `youtube_views`, `lyrics`, etc.
 
-2. Share your Google Sheet with the email address from your service account credentials
+2. Share your Google Sheet with the email address from your service account credentials. Give it the role of "Editor".
 
 ## Usage
 
