@@ -89,7 +89,7 @@ def example_update_spreadsheet():
                 row['energy'] = round(song_data.get('energy', 0), 3)
                 row['danceability'] = round(song_data.get('danceability', 0), 3)
                 row['artist_id'] = song_data.get('artist_id', '')
-                row['release_date'] = song_data.get('album_release_date', '')[:4]  # Just the year
+                row['year'] = song_data.get('album_release_date', '')[:4]  # Just the year
                 print(f"Updated Spotify data: Popularity={row['song_popularity']}, Tempo={row['tempo_spotify']}")
             
             # Get and update YouTube data

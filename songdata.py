@@ -46,7 +46,7 @@ def ensure_required_headers(sheet, methods):
         # Define required headers for each method
         required_headers = {
             'base': ['artist_name', 'song_title'],
-            'spotify': ['track_id', 'song_popularity', 'duration', 'tempo_spotify', 'energy', 'danceability', 'artist_id', 'release_date'],
+            'spotify': ['track_id', 'song_popularity', 'duration', 'tempo_spotify', 'energy', 'danceability', 'artist_id', 'year'],
             'youtube': ['youtube_views'],
             'lyrics': ['lyrics']
         }
@@ -257,11 +257,11 @@ def update_spotify_data(row, spotify_client):
         if 'genres' in row and not row.get('genres'):
             row['genres'] = str(song_data.get('genres', []))  # Format as string like original
             
-        if 'release_date' in row and not row.get('release_date'):
+        if 'year' in row and not row.get('year'):
             release_date = song_data.get('album_release_date', '')
             # Just take the year as in the original script
             if release_date and len(release_date) >= 4:
-                row['release_date'] = release_date[:4]
+                row['year'] = release_date[:4]
             
         return True
     except Exception as e:
