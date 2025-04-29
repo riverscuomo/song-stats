@@ -98,7 +98,7 @@ python songdata.py "Your Spreadsheet Name" "Sheet1" --methods spotify youtube ly
 ### Example
 
 ```bash
-python songdata.py "Encyclopedia o' Riffs" 0 --methods spotify youtube
+python songdata.py "Weezer Setlist" 0 --methods spotify youtube
 ```
 
 ## Using as a Module
