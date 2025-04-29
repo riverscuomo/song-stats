@@ -33,7 +33,7 @@ def example_single_song():
         print(f"Tempo: {song_data.get('tempo')}")
         print(f"Energy: {song_data.get('energy')}")
         print(f"Danceability: {song_data.get('danceability')}")
-        print(f"Valence: {song_data.get('valence')} (positivity)")
+        print(f"Duration: {int(song_data.get('duration_ms', 0) / 1000)} seconds")
     except Exception as e:
         print(f"Error getting Spotify data: {e}")
     
@@ -84,15 +84,19 @@ def example_update_spreadsheet():
             if song_data:
                 row['track_id'] = song_data.get('track_id', '')
                 row['song_popularity'] = song_data.get('popularity', 0)
-                row['tempo'] = round(song_data.get('tempo', 0), 1)
+                row['duration'] = int(song_data.get('duration_ms', 0) / 1000)  # Convert to seconds
+                row['tempo_spotify'] = round(song_data.get('tempo', 0), 1)
                 row['energy'] = round(song_data.get('energy', 0), 3)
-                print(f"Updated Spotify data: Popularity={row['song_popularity']}, Tempo={row['tempo']}")
+                row['danceability'] = round(song_data.get('danceability', 0), 3)
+                row['artist_id'] = song_data.get('artist_id', '')
+                row['release_date'] = song_data.get('album_release_date', '')[:4]  # Just the year
+                print(f"Updated Spotify data: Popularity={row['song_popularity']}, Tempo={row['tempo_spotify']}")
             
             # Get and update YouTube data
             view_count = get_video_view_count(artist_name, song_title)
             if view_count > 0:
-                row['view_count'] = view_count
-                print(f"Updated YouTube view count: {view_count:,}")
+                row['youtube_views'] = view_count
+                print(f"Updated YouTube views: {view_count:,}")
         
         # Update the first 3 rows
         print("\nUpdating spreadsheet...")
